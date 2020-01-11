@@ -1,0 +1,13 @@
+---
+
+
+
+ntp_servers:
+  - time1.google.com
+  - time2.google.com
+  - time3.google.com
+  - time4.google.com
+
+configure_network: false
+
+influxdb_auth_enabled: true

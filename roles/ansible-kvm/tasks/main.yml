@@ -1,0 +1,33 @@
+---
+
+- include: hw_virt_check.yml
+
+- include: install_kvm.yml
+
+- include: configure_kvm.yml
+
+- include: users.yml
+
+- include: configure_virtual_networks.yml
+  tags:
+    - config_virtual_networks
+  when:
+    - kvm_config_virtual_networks
+    - kvm_virtual_networks is defined
+
+- include: configure_storage_pools.yml
+  tags:
+    - config_storage_pools
+  when:
+    - kvm_config_storage_pools
+    - kvm_storage_pools is defined
+
+- include: configure_vms.yml
+  tags:
+    - config_vms
+  when:
+    - kvm_manage_vms is defined
+    - kvm_manage_vms
+    - kvm_vms is defined
+
+- include: list_vms.yml

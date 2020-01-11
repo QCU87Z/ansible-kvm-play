@@ -1,0 +1,33 @@
+---
+
+- name: configure_network | install required packages
+  package:
+    name: "{{ required_packages }}"
+    state: present
+  become: true
+
+- name: configure_network | add bridge
+  nmcli:
+    type: bridge
+    conn_name: '{{ item.conn_name }}'
+    ip4: '{{ item.ip4 }}'
+    gw4: '{{ item.gw4 }}'
+    state: present
+  register: bridge
+  with_items:
+    - '{{ nmcli_br }}'
+  ignore_errors: true
+
+- name: debug
+  debug:
+    var: bridge
+
+# - name: configure_network | add bridge slaves
+#   nmcli:
+#     type: bridge-slave
+#     conn_name: '{{ item.conn_name }}'
+#     ifname: '{{ item.ifname }}'
+#     master: '{{ item.master }}'
+#     state: present
+#   with_items:
+#     - '{{ nmcli_br_slaves }}'

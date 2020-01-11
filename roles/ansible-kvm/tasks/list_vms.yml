@@ -1,0 +1,22 @@
+---
+
+- name: list_vms | list vms
+  virt:
+    command: list_vms
+  become: true
+  register: all_vms
+
+- name: list_vms | list running vms
+  virt:
+    command: list_vms
+    state: running
+  become: true
+  register: running_vms
+
+- name: debug
+  debug:
+    var: all_vms
+
+- name: debug
+  debug:
+    var: running_vms

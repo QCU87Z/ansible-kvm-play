@@ -1,0 +1,5 @@
+---
+- src: git@github.com:QCU87Z/ansible-server.git
+  scm: git
+- src: git@github.com:QCU87Z/ansible-kvm.git
+  scm: git

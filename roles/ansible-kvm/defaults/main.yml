@@ -1,0 +1,155 @@
+---
+kvm_packages:
+  - bridge-utils
+  - libvirt-client
+  - libvirt-python
+  - libvirt
+  - qemu-img
+  - qemu-kvm
+  - virt-install
+  - virt-manager
+  - virt-viewer
+  - python-lxml
+
+# Variables for libvirtd.conf
+kvm_enable_tls: true
+kvm_enable_tcp: false
+kvm_tls_port: 16514
+kvm_tcp_port: 16509
+kvm_listen_addr: 0.0.0.0
+kvm_enable_mdns: false
+
+kvm_unix_sock_dir: /var/run/libvirt
+kvm_auth_unix_ro: none
+kvm_auth_unix_rw: none
+
+kvm_max_clients: 500
+kvm_max_queued_clients: 50
+kvm_max_anonymous_clients: 20
+kvm_min_workers: 5
+kvm_max_workers: 20
+kvm_prio_workers: 5
+kvm_max_requests: 20
+kvm_max_client_requests: 5
+kvm_admin_min_workers: 1
+kvm_admin_max_workers: 5
+kvm_admin_max_clients: 5
+kvm_admin_max_queued_clients: 5
+kvm_admin_max_client_requests: 5
+
+kvm_log_level: 3
+kvm_enable_libvirtd_syslog: false
+
+kvm_audit_logging: 0
+
+kvm_keepalive_interval: 5
+kvm_keepalive_count: 5
+kvm_admin_keepalive_interval: 5
+kvm_admin_keepalive_count: 5
+
+kvm_ovs_timeout: 5
+
+# Variables for users
+kvm_users:
+  []
+
+# Variable for networks
+kvm_config_virtual_networks: true
+
+kvm_virtual_networks:
+  - name: main_net
+    mode: bridge
+    bridge_name: br0
+    autostart: true
+    state: active
+  # - name: ovs-network
+  #   mode: bridge
+  #   bridge_name: ovsbr0
+  #   autostart: true
+  #   # active, inactive, present and absent
+  #   state: active
+  #   virtualport_type: openvswitch
+  #   vlans:
+  #     - name: vlan-101
+  #       trunk: false
+  #       vlan: 101
+  #     - name: vlan-102
+  #       trunk: false
+  #       vlan: 102
+  #     - name: vlan-201
+  #       trunk: false
+  #       vlan: 201
+  #     - name: vlan-all
+  #       trunk: true
+  #       vlan:
+  #         - 101
+  #         - 102
+  #         - 201
+  # - name: Green_Servers_VLAN101
+  #   mode: bridge
+  #   bridge_name: vmbr101
+  #   autostart: true
+  #   state: active
+  # - name: maas
+  #   mode: bridge
+  #   bridge_name: ovsbr0
+  #   autostart: true
+  #   state: active
+  #   virtualport_type: openvswitch
+  #   vlan: 193
+
+# Variable for storage pools
+kvm_config_storage_pools: true
+
+kvm_storage_pools:
+  - name: VM1
+    path: /var/lib/libvirt/filesystems/
+    autostart: true
+    state: active
+  - name: VM2
+    path: /var/lib/libvirt/lxc
+    autostart: true
+    state: active
+
+# Variables for virtual machines
+kvm_manage_vms: false
+
+kvm_images_format_type: qcow2
+kvm_images_cache_mode: none
+kvm_images_path: /var/lib/libvirt/images
+
+kvm_vms:
+  - name: test_vm
+    autostart: true
+    # Define boot devices in order of preference
+    boot_devices:
+      - network
+      - hd
+      # - cdrom
+    cdrom:
+      source: /tmp/centos.iso
+    graphics: false
+    # Define disks in MB
+    disks:
+        # ide, scsi, virtio, xen, usb, sata or sd
+      - disk_driver: virtio
+        name: test_vm.1
+        size: 36864
+      - disk_driver: virtio
+        name: test_vm.2
+        size: 51200
+    # Define a specific host where the VM should reside..Match inventory_hostname
+    # host: kvm01
+    # Define memory in MB
+    memory: 512
+    network_interfaces:
+      - source: default
+        network_driver: virtio
+        portgroup: main_net
+        type: network
+      # - source: vmbr102
+      #   network_driver: virtio
+      #   type: bridge
+    state: running
+    vcpu: 1
+

@@ -1,0 +1,6 @@
+---
+
+ipv4: 10.11.12.209
+hostname: host1.qcu87z.net
+kvm_users:
+  - ashley

@@ -1,0 +1,9 @@
+---
+
+common_packages:
+  - htop
+  - vim
+  - ack
+  - net-tools
+  - bind-utils
+  - qemu-guest-agent

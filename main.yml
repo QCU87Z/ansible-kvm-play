@@ -1,0 +1,20 @@
+---
+
+- hosts: all
+  tags:
+    - server-role
+  vars_files:
+    - vars.yml
+    - vault.yml
+  roles:
+    - role: ansible-server
+  tasks: []
+
+- hosts: kvm_hosts
+  vars_files:
+    - vars.yml
+    - vault.yml
+  roles:
+    - role: ansible-kvm
+  tasks: []
+

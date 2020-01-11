@@ -1,0 +1,44 @@
+---
+
+  
+  tasks:
+  - name: copy repo
+    copy:
+      src: influxdb.repo
+      dest: /etc/yum.repos.d/influxdb.repo
+    become: true
+
+  - name: install influxdb
+    package:
+      name: influxdb
+      state: present
+    become: true
+
+  - name: enable / start influxdb
+    service:
+      name: influxdb
+      state: started
+      enabled: true
+    become: true
+
+  - name: open firewall ports
+    firewalld:
+      state: enabled
+      immediate: yes
+      permanent: yes
+      port: 8086/tcp
+    become: true
+        
+  - name: render influxdb.conf template
+    template:
+      src: influxdb.conf.j2
+      dest: /etc/influxdb/influxdb.conf
+    become: yes
+    notify: restart influxdb
+
+  handlers:
+    - name: restart influxdb
+      service:
+        name: influxdb
+        state: restarted
+      become: true

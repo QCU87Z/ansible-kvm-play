@@ -1,0 +1,7 @@
+---
+# Usage ansible-play -i inventories clone.yml --extra-vars "Source_VM_Name=template-centos-7 New_VM_Name=vmX"
+
+- name: Cloning QEMU VMs using Virt-Clone
+  hosts: host1
+  
+  include: clone_vm.yml

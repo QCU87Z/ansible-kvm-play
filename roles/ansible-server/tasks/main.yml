@@ -1,0 +1,19 @@
+---
+- include: configure_misc.yml
+
+- include: configure_network.yml
+  tags: configure_network
+  when: configure_networks
+
+- include: add_packages.yml
+  when: add_packages
+
+- include: configure_ntp.yml
+  when: configure_ntp
+
+- include: configure_sshd.yml
+  when: configure_sshd
+
+- include: configure_motd.yml
+  tags: configure_motd
+  when: configure_motd
